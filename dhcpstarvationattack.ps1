@@ -10,6 +10,10 @@
 # https://www.om.nl/onderwerpen/cybercrime/hack_right/wetsartikel-computervredebreuk
 #
 
+# DHCP-Starvation-Attack is een aanval die gericht is op DHCP-servers waarbij de DHCP verzoeken worden vervalst.
+# DHCP Leases worden uitgedeeld tot de DHCP server geen LEASES meer kan geven (de starvation).
+# Script is bedoeld voor Educatieve Doeleinden.
+
 $NetAdapterName = "" # Voorbeeld    $NetAdapterName = "Ethernet"
 
 for ($i = 0;$i -lt 10;$i++){
